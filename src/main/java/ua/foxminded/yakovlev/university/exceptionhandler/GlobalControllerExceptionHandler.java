@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 
 import ua.foxminded.yakovlev.university.exception.NotFoundException;
 import java.lang.IllegalArgumentException;
@@ -52,5 +53,12 @@ class GlobalControllerExceptionHandler {
             String errorsMessage = exception.getRootCause().getMessage();
              
             return new ExceptionInfo(req.getRequestURI(), errorsMessage);
+    }
+    
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseBody
+    public ExceptionInfo handleAuthenticationException(HttpServletRequest req, AuthenticationException exception) {    	    	
+		return new ExceptionInfo(req.getRequestURI(), exception.getMessage());
     }
 }
