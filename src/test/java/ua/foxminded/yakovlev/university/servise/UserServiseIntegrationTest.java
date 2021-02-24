@@ -11,14 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import ua.foxminded.yakovlev.university.exception.NotFoundException;
-import ua.foxminded.yakovlev.university.repository.StudentRepository;
 import ua.foxminded.yakovlev.university.repository.UserRepository;
-import ua.foxminded.yakovlev.university.service.impl.CourseServiceImpl;
 import ua.foxminded.yakovlev.university.service.impl.UserService;
-import ua.foxminded.yakovlev.university.util.CourseGenerator;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiseIntegrationTest {
