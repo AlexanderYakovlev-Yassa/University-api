@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<context>
-	<ResourceLink auth="Container" name="jdbc/UniversityDB" global="jdbc/UniversityDB" type="javax.sql.DataSource" />
-</context>
