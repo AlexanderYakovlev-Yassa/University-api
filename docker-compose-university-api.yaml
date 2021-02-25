@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  app:
+    image: 'university-api:latest'
+    build:
+      context: .
+    container_name: app
+    ports: 
+      - 8085:8080
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/University
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1254
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+          
+  db:
+    image: 'postgres:13'
+    container_name: db
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1254
+      - POSTGRES_DB=University
+      - PGDATA=/var/lib/postgresql/data
+    ports:
+      - 10000:5432
+      
+volumes:
+  dbdata:
