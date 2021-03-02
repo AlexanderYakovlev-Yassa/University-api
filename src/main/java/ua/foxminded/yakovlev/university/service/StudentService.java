@@ -10,4 +10,5 @@ public interface StudentService extends EntityService<Student, Long>{
 	List<Student> findStudentsWithoutGroup();
 	Student addGroup(Long studentId, Long groupId);
 	Student removeGroup(Long studentId, Long groupId);
+	boolean isStudent(Long personId);
 }

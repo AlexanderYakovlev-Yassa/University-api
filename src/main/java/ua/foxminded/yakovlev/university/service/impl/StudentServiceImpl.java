@@ -74,4 +74,9 @@ public class StudentServiceImpl extends AbstractServiceJpa<Student, Long> implem
 	protected Long getIdentifire(Student student) {
 		return student.getPersonId();
 	}
+
+	@Override
+	public boolean isStudent(Long personId) {
+		return studentDao.findById(personId).orElse(null) != null;
+	}
 }
