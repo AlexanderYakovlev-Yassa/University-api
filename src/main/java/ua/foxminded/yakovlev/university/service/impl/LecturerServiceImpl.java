@@ -38,4 +38,9 @@ public class LecturerServiceImpl extends AbstractServiceJpa<Lecturer, Long> impl
 	protected Long getIdentifire(Lecturer lecturer) {
 		return lecturer.getPersonId();
 	}
+
+	@Override
+	public boolean isLecturer(Long personId) {
+		return dao.findById(personId).orElse(null) != null;
+	}
 }

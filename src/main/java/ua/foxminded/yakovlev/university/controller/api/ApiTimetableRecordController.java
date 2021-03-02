@@ -1,5 +1,6 @@
 package ua.foxminded.yakovlev.university.controller.api;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.Valid;
@@ -24,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import ua.foxminded.yakovlev.university.dto.TimetableRecordDto;
 import ua.foxminded.yakovlev.university.entity.TimetableRecord;
+import ua.foxminded.yakovlev.university.entity.User;
 import ua.foxminded.yakovlev.university.mapper.TimetableRecordMapper;
 import ua.foxminded.yakovlev.university.service.TimetableRecordService;
+import ua.foxminded.yakovlev.university.service.impl.UserService;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +36,7 @@ import ua.foxminded.yakovlev.university.service.TimetableRecordService;
 public class ApiTimetableRecordController {
 	
 	private final TimetableRecordService timetableRecordService;
+	private final UserService userService;
 	private final TimetableRecordMapper timetableRecordMapper;
 	@Qualifier(value="messageSource")
 	private final ResourceBundleMessageSource messageSource;
@@ -103,5 +107,21 @@ public class ApiTimetableRecordController {
     		@RequestParam(name="lecturer-id") Long lecturerId
     		) {		
         return ResponseEntity.ok(timetableRecordMapper.toTimetableRecordDtos(timetableRecordService.findByLecturer(lecturerId, start, end)));
+    }
+	
+	@GetMapping("/personal")
+	@PreAuthorize("hasAuthority('READ_TIMETABLE')")
+    public ResponseEntity<List<TimetableRecordDto>> showPersonalTimetable(
+    		@RequestParam(name="start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start, 
+    		@RequestParam(name="numberOfDays", required = false) Long numberOfDays, 
+    		Principal principal) {
+		
+		if (principal == null) {
+			throw new IllegalArgumentException("Undefined user");
+		}
+		
+		User activeUser = userService.findByUsername(principal.getName());
+		
+        return ResponseEntity.ok(timetableRecordMapper.toTimetableRecordDtos(timetableRecordService.findByUser(activeUser, start, numberOfDays)));
     }
 }
